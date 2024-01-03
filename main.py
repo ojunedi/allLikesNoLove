@@ -75,7 +75,9 @@ def get_all_saved_tracks(user, limit_step=50):
 
 
 def main():
-
+    
+    # Do not need to keep track of likedSongs because of current_user_saved_tracks_contains() method
+    # however could be useful later for different analyses so I'll keep it around for now
     # likedSongs = get_all_saved_tracks(sp)
     allSongs = get_songs_from_playlist(sp)
     # print(type(allSongs), len(allSongs))
@@ -83,7 +85,9 @@ def main():
         for trackName, trackId in tqdm(allSongs):
             # print([trackId.removeprefix("spotify:track:")])
             trackId = trackId.removeprefix("spotify:track:")
+            # in case of removed tracks, local tracks, or changed IDs
             try:
+                # takes in list of ids, and returns list of bools
                 if not sp.current_user_saved_tracks_contains([trackId])[0]:
                     print(f"{trackName} was not in liked songs")
                     try: 
